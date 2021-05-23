@@ -5,11 +5,7 @@ import com.example.android.gdgfinder.network.GdgApiService
 import com.example.android.gdgfinder.network.GdgChapter
 import com.example.android.gdgfinder.network.GdgResponse
 import com.example.android.gdgfinder.network.LatLong
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class GdgChapterRepository(gdgApiService: GdgApiService) {
 
@@ -91,7 +87,7 @@ class GdgChapterRepository(gdgApiService: GdgApiService) {
         // since we'll need to launch a new coroutine for the sorting use coroutineScope.
         // coroutineScope will automatically wait for anything started via async {} or await{} in it's block to
         // complete.
-        val result = coroutineScope {
+        return coroutineScope {
             // launch a new coroutine to do the sort (so other requests can wait for this sort to complete)
             val deferred = async { SortedData.from(request.await(), location) }
             // cache the Deferred so any future requests can wait for this sort
@@ -99,7 +95,6 @@ class GdgChapterRepository(gdgApiService: GdgApiService) {
             // and return the result of this sort
             deferred.await()
         }
-        return result
     }
 
     /**

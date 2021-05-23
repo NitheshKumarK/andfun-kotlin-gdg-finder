@@ -4,38 +4,40 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.android.gdgfinder.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        navController = this.findNavController(R.id.nav_host_fragment)
+        binding.navigationView.setOnClickListener {
 
+        }
         setupNavigation()
     }
 
-    /**
-     * Called when the hamburger menu or back button are pressed on the Toolbar
-     *
-     * Delegate this to Navigation.
-     */
-    override fun onSupportNavigateUp()
-            = navigateUp(findNavController(R.id.nav_host_fragment), binding.drawerLayout)
+    override fun onSupportNavigateUp(): Boolean {
+        navController.navigateUp()
+        return super.onSupportNavigateUp()
+    }
 
     /**
      * Setup Navigation for this Activity
      */
     private fun setupNavigation() {
         // first find the nav controller
-        val navController = findNavController(R.id.nav_host_fragment)
+
 
         setSupportActionBar(binding.toolbar)
 

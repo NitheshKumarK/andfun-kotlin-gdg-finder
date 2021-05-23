@@ -90,4 +90,5 @@ dependencies {
 
     // Client for retrieving location
     implementation "com.google.android.gms:play-services-location:$version_play_services"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }
